@@ -1,3 +1,29 @@
+import json
+
+INVENTORY_FILE = "inventory.json"
+
+
+def load_inventory(filename=INVENTORY_FILE):
+    """Checks whether the inventory file exists and loads it if so.
+    If the file doesn't exist (or is corrupted), starts with an empty
+    inventory and continues running without producing an error."""
+    try:
+        with open(filename, "r") as f:
+            print(f"{filename} found.")
+            inventory = json.load(f)
+            print("Inventory loaded successfully.")
+            return inventory
+
+    except FileNotFoundError:
+        print(f"{filename} not found. Starting with an empty inventory.")
+        return []
+
+    except json.JSONDecodeError:
+        print(f"Warning: {filename} is corrupted or unreadable. "
+              f"Starting with an empty inventory.")
+        return []
+
+
 def display_all(inventory):
     """Displays all products currently in the inventory."""
     print("\nCurrent Inventory")
@@ -9,14 +35,11 @@ def display_all(inventory):
 
 
 def main():
-    # 1. Data Representation: inventory items as dictionaries in a list
-    inventory = [
-        {"id": "P001", "name": "Laptop", "price": 1200.00, "stock": 15},
-        {"id": "P002", "name": "Mouse", "price": 25.50, "stock": 40},
-        {"id": "P003", "name": "Keyboard", "price": 45.00, "stock": 25},
-    ]
+    # 3. Data Persistence: load from inventory.json if it exists,
+    # otherwise start with an empty inventory
+    inventory = load_inventory()
 
-    # Quick sanity check that the data structure looks right
+    # Quick sanity check that loading worked as expected
     display_all(inventory)
 
 

@@ -9,6 +9,7 @@ class PhysicalProduct(Product, CanBeShipped):
 
     BASE_SHIPPING_COST = 5.00    # flat handling fee
     COST_PER_KG = 2.00           # added per kilogram of weight
+    TYPE = "physical"           # identifier stored in the JSON file
 
     def __init__(self, product_id, name, price, stock, weight):
         super().__init__(product_id, name, price, stock)   # reuse Product setup
@@ -19,6 +20,14 @@ class PhysicalProduct(Product, CanBeShipped):
     @property
     def weight(self):
         return self.__weight
+
+    def to_dict(self):
+        return {"type": self.TYPE, **super().to_dict(), "weight": self.__weight}
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(data["id"], data["name"], data["price"],
+                   data["stock"], data["weight"])
 
     def calculate_shipping_cost(self):
         """Simple rule: flat base fee plus a charge per kilogram."""

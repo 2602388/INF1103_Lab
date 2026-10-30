@@ -44,6 +44,11 @@ class Product(ABC):
             raise ValueError("Stock quantity cannot be negative.")
         self.__stock = quantity
 
+    def to_dict(self):
+        """Returns the common data as a plain dict (used for JSON saving)."""
+        return {"id": self.__product_id, "name": self.__name,
+                "price": self.__price, "stock": self.__stock}
+
     @abstractmethod
     def get_fulfilment_info(self):
         """Returns a message describing how this product reaches the customer.

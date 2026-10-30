@@ -4,6 +4,8 @@ from product import Product
 class DigitalProduct(Product):
     """A product delivered by download. (A DigitalProduct is-a Product.)"""
 
+    TYPE = "digital"               # identifier stored in the JSON file
+
     def __init__(self, product_id, name, price, stock, download_size):
         super().__init__(product_id, name, price, stock)   # reuse Product setup
         if download_size <= 0:
@@ -13,6 +15,15 @@ class DigitalProduct(Product):
     @property
     def download_size(self):
         return self.__download_size
+
+    def to_dict(self):
+        return {"type": self.TYPE, **super().to_dict(),
+                "download_size": self.__download_size}
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(data["id"], data["name"], data["price"],
+                   data["stock"], data["download_size"])
 
     def get_fulfilment_info(self):
         return "Delivered digitally via download."

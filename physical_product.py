@@ -14,6 +14,9 @@ class PhysicalProduct(Product):
     def weight(self):
         return self.__weight
 
+    def get_fulfilment_info(self):
+        return "Requires physical shipping."
+
     def display_information(self):
         super().display_information()                       # common info from parent
         print(f"    Type: Physical | Weight: {self.__weight:.2f} kg")
@@ -21,3 +24,4 @@ class PhysicalProduct(Product):
     def display_details(self):
         super().display_details()
         print(f"Weight: {self.__weight:.2f} kg")
+        print(f"Fulfilment: {self.get_fulfilment_info()}")

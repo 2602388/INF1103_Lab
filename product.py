@@ -1,5 +1,11 @@
-class Product:
-    """Base class: represents and manages the data every product shares."""
+from abc import ABC, abstractmethod
+
+
+class Product(ABC):
+    """Abstract base class: the data and behaviour every product shares.
+
+    Product cannot be instantiated directly; every product must be a
+    concrete subtype (physical or digital)."""
 
     def __init__(self, product_id, name, price, stock):
         if price < 0:
@@ -37,6 +43,11 @@ class Product:
         if quantity < 0:
             raise ValueError("Stock quantity cannot be negative.")
         self.__stock = quantity
+
+    @abstractmethod
+    def get_fulfilment_info(self):
+        """Returns a message describing how this product reaches the customer.
+        Every subclass must provide its own implementation."""
 
     def display_information(self):
         """Prints a one-line summary of the common product information."""

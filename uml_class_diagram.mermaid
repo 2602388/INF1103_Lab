@@ -1,0 +1,56 @@
+classDiagram
+    class Product {
+        <<abstract>>
+        -str __product_id
+        -str __name
+        -float __price
+        -int __stock
+        +product_id() str
+        +name() str
+        +price() float
+        +stock() int
+        +update_stock(int quantity) void
+        +get_fulfilment_info()* str
+        +display_information() void
+        +display_details() void
+        +to_dict() dict
+    }
+
+    class PhysicalProduct {
+        -float __weight
+        +weight() float
+        +get_fulfilment_info() str
+        +calculate_shipping_cost() float
+        +display_information() void
+        +display_details() void
+        +to_dict() dict
+        +from_dict(dict data)$ PhysicalProduct
+    }
+
+    class DigitalProduct {
+        -float __download_size
+        +download_size() float
+        +get_fulfilment_info() str
+        +display_information() void
+        +display_details() void
+        +to_dict() dict
+        +from_dict(dict data)$ DigitalProduct
+    }
+
+    class CanBeShipped {
+        <<interface>>
+        +calculate_shipping_cost()* float
+    }
+
+    class Inventory {
+        -list __products
+        +add_product(Product product) bool
+        +search_product(str product_id) Product
+        +display_all() void
+        +get_products() list
+    }
+
+    Product <|-- PhysicalProduct : inherits
+    Product <|-- DigitalProduct : inherits
+    CanBeShipped <|.. PhysicalProduct : implements
+    Inventory o-- "0..*" Product : manages

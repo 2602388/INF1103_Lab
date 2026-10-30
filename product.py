@@ -1,12 +1,11 @@
 class Product:
-    """Represents and manages a single product (its own data and state)."""
+    """Base class: represents and manages the data every product shares."""
 
     def __init__(self, product_id, name, price, stock):
         if price < 0:
             raise ValueError("Price cannot be negative.")
 
-        # Private attributes (name-mangled): outside code should use the
-        # public properties/methods below instead of touching these directly.
+        # Private attributes: outside code uses the properties/methods below.
         self.__product_id = product_id
         self.__name = name
         self.__price = float(price)
@@ -40,15 +39,13 @@ class Product:
         self.__stock = quantity
 
     def display_information(self):
-        """Prints a one-line summary (used when listing all products)."""
+        """Prints a one-line summary of the common product information."""
         print(f"ID: {self.__product_id} | Name: {self.__name} | "
               f"Price: ${self.__price:.2f} | Stock: {self.__stock}")
 
     def display_details(self):
-        """Prints the full multi-line detail view (used by search)."""
-        print("-" * 48)
+        """Prints the common detail lines (callers add any surrounding border)."""
         print(f"ID: {self.__product_id}")
         print(f"Name: {self.__name}")
         print(f"Price: ${self.__price:.2f}")
         print(f"Stock: {self.__stock}")
-        print("-" * 48)
